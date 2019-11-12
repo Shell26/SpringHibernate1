@@ -5,12 +5,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ru.shell.model.Role;
 import ru.shell.model.User;
 import ru.shell.service.UserService;
 import ru.shell.service.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Set;
 
 //сообщает Spring MVC, что данный класс является контроллером
 @Controller

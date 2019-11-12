@@ -19,37 +19,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional  //метод должен выполняться в транзакции
     public List<User> allUsers() {
         return userDao.allUsers();
     }
 
     @Override
-    @Transactional  //метод должен выполняться в транзакции
     public void add(User user) {
         userDao.add(user);
     }
 
     @Override
-    @Transactional  //метод должен выполняться в транзакции
     public void delete(User user) {
         userDao.delete(user);
     }
 
     @Override
-    @Transactional  //метод должен выполняться в транзакции
     public void edit(User user) {
         userDao.edit(user);
     }
 
     @Override
-    @Transactional  //метод должен выполняться в транзакции
     public User getById(int id) {
         return userDao.getById(id);
     }
 
     @Override
-    @Transactional  //метод должен выполняться в транзакции
     public User getByName(String name) {
         return userDao.getByName(name);
     }

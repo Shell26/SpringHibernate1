@@ -21,13 +21,6 @@ public class MyAuthenticationSuccesHandler implements AuthenticationSuccessHandl
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-        HttpSession session = httpServletRequest.getSession();
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        session.setAttribute("username", user.getUsername());
-        session.setAttribute("authorities", authentication.getAuthorities());
 
-        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-
-        httpServletResponse.sendRedirect("/");
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import ru.shell.controller.MyAuthenticationSuccesHandler;
 import ru.shell.model.User;
@@ -28,7 +29,6 @@ import java.io.IOException;
 public class SpringConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    @Qualifier("userDetailsService")
     UserDetailsService userDetailsService;
 
     @Autowired
@@ -36,7 +36,7 @@ public class SpringConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
+        auth.userDetailsService(userDetailsService).passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
 
     @Override
@@ -56,8 +56,9 @@ public class SpringConfig extends WebSecurityConfigurerAdapter {
 //                .loginProcessingUrl("/")
 //                .defaultSuccessUrl("/")
 //                .failureUrl("/login?errorrrrrrrrrrr").permitAll() //При успешном входе пользователь попадет на страницу со списком, при ошибке — останется на странице входа
-//            .and()
-//                .logout().logoutSuccessUrl("/").permitAll()//При успешном выходе пользователь попадет на главную страницу
+            .and()
+//                .logout()
+                .logout().logoutSuccessUrl("/").permitAll()//При успешном выходе пользователь попадет на главную страницу
             .and()
                 .csrf().disable();
     }

@@ -39,10 +39,10 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String userRole = getRoles().toString();
-        GrantedAuthority authority = new SimpleGrantedAuthority(userRole);
-        return Collections.singletonList(authority);
-//        return getRoles();
+//        String userRole = getRoles().toString();
+//        GrantedAuthority authority = new SimpleGrantedAuthority(userRole);
+//        return Collections.singletonList(authority);
+        return getRoles();
     }
 
     public String getPassword() {
