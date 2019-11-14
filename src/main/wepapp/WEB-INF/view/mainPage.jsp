@@ -33,5 +33,9 @@
 <c:url value="/admin/add" var="add"/>
 <a href="${add}">Add new user</a>
 
+<form action="/logout" method="post">
+    <input type="submit" value="Logout"/>
+</form>
+
 </body>
 </html>

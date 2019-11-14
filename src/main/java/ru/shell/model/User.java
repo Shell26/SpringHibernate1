@@ -93,30 +93,14 @@ public class User implements UserDetails {
 
     }
 
-    public User(Long age, String name, String password, Set<Role> roles) {
+    public User(Long age, String name, String password) {
         this.age = age;
         this.name = name;
         this.password = password;
-        this.roles = roles;
+//        this.roles = roles;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id == user.id &&
-                Objects.equals(age, user.age) &&
-                Objects.equals(name, user.name) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(roles, user.roles);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getAge(), getName(), getPassword());
-    }
-}
+  }
 
 
 

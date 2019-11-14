@@ -58,7 +58,7 @@ public class SpringConfig extends WebSecurityConfigurerAdapter {
 //                .failureUrl("/login?errorrrrrrrrrrr").permitAll() //При успешном входе пользователь попадет на страницу со списком, при ошибке — останется на странице входа
             .and()
 //                .logout()
-                .logout().logoutSuccessUrl("/").permitAll()//При успешном выходе пользователь попадет на главную страницу
+                .logout().permitAll()//При успешном выходе пользователь попадет на главную страницу
             .and()
                 .csrf().disable();
     }

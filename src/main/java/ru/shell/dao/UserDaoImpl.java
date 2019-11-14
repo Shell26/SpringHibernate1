@@ -25,7 +25,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-
 //    @SupressWarning("unchecked")
     public List<User> allUsers() {
         Session session = sessionFactory.openSession();
@@ -38,7 +37,7 @@ public class UserDaoImpl implements UserDao {
     @Transactional
     public void add(User user) {
         Session session = sessionFactory.openSession();
-        session.persist(user);
+        session.save(user);
         session.close();
     }
 

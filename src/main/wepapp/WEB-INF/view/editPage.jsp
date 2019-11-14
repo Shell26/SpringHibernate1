@@ -29,8 +29,8 @@
     <label for="password">Password</label>
     <input type="text" name="password" id="password">
 
-    <label for="role">Role</label>
-    <input type="text" name="role" id="role">
+<%--    <label for="role">Role</label>--%>
+<%--    <input type="text" name="role" id="role">--%>
     <c:if test="${empty user.name}">
         <input type="submit" value="Add new user">
     </c:if>

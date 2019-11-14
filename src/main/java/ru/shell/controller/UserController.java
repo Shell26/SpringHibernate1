@@ -2,15 +2,20 @@ package ru.shell.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.shell.model.Role;
 import ru.shell.model.User;
+import ru.shell.service.RoleService;
 import ru.shell.service.UserService;
 import ru.shell.service.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,6 +27,7 @@ public class UserController {
 //    дальше передает их конкретному контроллеру. диспетчер будет проверять аннотации
 //    @RequestMapping чтобы вызвать подходящий метод.
 
+    private RoleService roleService;
     private UserService userService;
 
     @Autowired
@@ -29,9 +35,22 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Autowired
+    public void setRoleService(RoleService roleService){
+        this.roleService = roleService;
+    }
+
     //позволяет задать адреса методам контроллера, по которым они будут доступны в клиенте (браузер)
     //Eе можно применять также и к классу контроллера, чтобы задать корневой адрес для всех методов.
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ModelAndView homePage(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("home");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/admin", method = RequestMethod.GET)
 //    @RequestMapping(method = RequestMethod.GET)
     public ModelAndView allUsers() {
         List<User> list = userService.allUsers();
@@ -53,7 +72,7 @@ public class UserController {
     @RequestMapping(value = "/admin/edit", method = RequestMethod.POST)
     public ModelAndView editUser(@ModelAttribute("user") User user) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/"); //означает, что после выполнения данного метода мы будем перенаправлены на адрес "/"
+        modelAndView.setViewName("redirect:/admin"); //означает, что после выполнения данного метода мы будем перенаправлены на адрес "/"
         userService.edit(user);
         return modelAndView;
     }
@@ -68,15 +87,19 @@ public class UserController {
     @RequestMapping(value = "/admin/add", method = RequestMethod.POST)
     public ModelAndView addUser(@ModelAttribute("User") User user) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/");
+        Role role = roleService.getById((long) 2);
+        Set<Role> setRoles = new HashSet<>();
+        setRoles.add(role);
+        user.setRoles(setRoles);
         userService.add(user);
+        modelAndView.setViewName("redirect:/admin");
         return modelAndView;
     }
 
     @RequestMapping(value="/admin/delete/{id}", method = RequestMethod.GET)
     public ModelAndView deleteUser(@PathVariable("id") int id) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/");
+        modelAndView.setViewName("redirect:/admin");
         User user = userService.getById(id);
         userService.delete(user);
         return modelAndView;
@@ -84,14 +107,8 @@ public class UserController {
 
     @RequestMapping(value="/login", method = RequestMethod.GET)
     public ModelAndView login() { //Authentication authentication
-//        if(authentication != null){
-//            ModelAndView modelAndView1 = new ModelAndView();
-//            modelAndView1.setViewName("redirect:/");
-//            return modelAndView1;
-//        }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login");
         return modelAndView;
     }
-
 }
