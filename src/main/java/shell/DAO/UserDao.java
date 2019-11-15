@@ -1,4 +1,4 @@
-package shell.Dao;
+package shell.DAO;
 
 import shell.model.User;
 

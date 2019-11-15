@@ -2,7 +2,7 @@ package shell.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import shell.Dao.RoleDao;
+import shell.DAO.RoleDao;
 import shell.model.Role;
 
 @Component
