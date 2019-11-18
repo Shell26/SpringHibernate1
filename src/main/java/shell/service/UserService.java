@@ -1,68 +1,22 @@
 package shell.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import shell.DAO.*;
-import shell.model.Role;
+
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import shell.model.User;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-@Component
-public class UserService {
+public interface UserService {
 
-private UserDao userDAO;
+    void addUser(User user);
 
-@Autowired
-private RoleService roleService;
+    User findOneByLogin(String login);
 
-    @Autowired
-    public UserService( UserDao userDAO) {
-        this.userDAO = userDAO;
-    }
+    User findOneById(Long id);
 
-    public List<User> getAll() {
-        return userDAO.getAll();
-    }
+    void deleteById(Long Id);
 
-    public User get(Long id) {
-        return userDAO.get(id);
-    }
-
-    public void save(User user, String roleUser) {
-        Set<Role> role = new HashSet<>();
-        if (roleUser.equals("ADMIN")) {
-            role.add(roleService.getRoleById(1L));
-            user.setRoles(role);
-            userDAO.save(user);
-        } else {
-            role.add(roleService.getRoleById(2L));
-            user.setRoles(role);
-            userDAO.save(user);
-        }
-    }
-
-    public void saveAdmin(User user) {
-        Set<Role> role = new HashSet<>();
-        role.add(roleService.getRoleById(2L));
-        user.setRoles(role);
-        userDAO.save(user);
-    }
-
-    public User getByLogin(String userlogin) {
-      User user = userDAO.getByLogin(userlogin);
-      return user;
-    }
-
-    public void delete(Long id) {
-        userDAO.delete(id);
-    }
-
-    public void edit(User user) {
-        userDAO.update(user);
-    }
-
-
+    List<User> findAllUser ();
 }

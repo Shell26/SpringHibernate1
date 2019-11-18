@@ -1,25 +1,12 @@
 package shell.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import shell.DAO.RoleDao;
 import shell.model.Role;
 
-@Component
-public class RoleService {
+import java.util.Set;
 
-    private RoleDao roleDAO;
+public interface RoleService {
 
-    @Autowired
-    public RoleService(RoleDao roleDAO) {
-        this.roleDAO = roleDAO;
-    }
+    Set<Role> getRole ();
 
-    public Role getRoleById(Long roleId) {
-        return roleDAO.getRoleById(roleId);
-    }
-
-    public Role getRoleUser() {
-        return roleDAO.getRoleUser();
-    }
+    Set<Role> getRoleByName (String nameRole);
 }
