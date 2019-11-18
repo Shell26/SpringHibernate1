@@ -19,8 +19,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         Optional<User> userCandidate = Optional.ofNullable(repository.findOneByLogin(login));
-        if (userCandidate.isPresent()) {
-            return userCandidate.get();
+        if (userCandidate.isPresent()) {   //существует ли?
+            return userCandidate.get();   //возвращает ЕСЛИ есть
         } else throw new IllegalArgumentException("User not found");
     }
 
