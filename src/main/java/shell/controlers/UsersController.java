@@ -68,6 +68,10 @@ public class UsersController {
 
     @RequestMapping(value = "/admin/edit", method = RequestMethod.POST)
     public ModelAndView editUser(@ModelAttribute("user") User user) {
+        Role role = roleService.getRoleById((long) 2);
+        Set<Role> setRoles = new HashSet<>();
+        setRoles.add(role);
+        user.setRoles(setRoles);
         userService.edit(user, user.getId());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/admin"); //означает, что после выполнения данного метода мы будем перенаправлены на адрес "/"

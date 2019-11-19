@@ -34,11 +34,11 @@ private RoleService roleService;
     public void save(User user, String roleUser) {
         Set<Role> role = new HashSet<>();
         if (roleUser.equals("ADMIN")) {
-            role.add(roleService.getRoleById(2L));
+            role.add(roleService.getRoleById(1L));
             user.setRoles(role);
             userDAO.save(user);
         } else {
-            role.add(roleService.getRoleById(1L));
+            role.add(roleService.getRoleById(2L));
             user.setRoles(role);
             userDAO.save(user);
         }
@@ -46,9 +46,8 @@ private RoleService roleService;
     }
 
 
-    public User getByLogin(String userlogin) {
-      User user = userDAO.getByLogin(userlogin);
-      return user;
+    public User getByLogin(String login) {
+      return userDAO.getByLogin(login);
     }
 
     public void delete(Long id) {
