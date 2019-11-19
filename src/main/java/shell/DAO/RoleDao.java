@@ -3,7 +3,7 @@ package shell.DAO;
 
 import shell.model.Role;
 
-public interface RoleDAO {
+public interface RoleDao {
 
     Role getRoleById(Long roleId);
     Role getRoleUser();

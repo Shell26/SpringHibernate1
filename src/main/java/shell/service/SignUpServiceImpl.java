@@ -18,9 +18,6 @@ public class SignUpServiceImpl implements SignUpService {
 
     @Override
     public void signUp(shell.model.User user, String role) {
-      //  Set<Role> role = new HashSet<>();
-       // role.add(roleService.getRoleById(2L));
-       // user.setRoles(role);
         userService.save(user, role);
     }
 }

@@ -10,11 +10,11 @@ import shell.util.DBHelper;
 import java.util.List;
 
 @Component
-public class UserDAOHibernateImpl implements UserDAO {
+public class UserDaoImpl implements UserDao {
 
     private SessionFactory sessionFactory;
 
-    public UserDAOHibernateImpl() {
+    public UserDaoImpl() {
         sessionFactory = DBHelper.getSessionFactory();
     }
 

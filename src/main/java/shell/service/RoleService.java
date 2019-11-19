@@ -2,16 +2,16 @@ package shell.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import shell.DAO.RoleDAO;
+import shell.DAO.RoleDao;
 import shell.model.Role;
 
 @Component
 public class RoleService {
 
-    private RoleDAO roleDAO;
+    private RoleDao roleDAO;
 
     @Autowired
-    public RoleService(RoleDAO roleDAO) {
+    public RoleService(RoleDao roleDAO) {
         this.roleDAO = roleDAO;
     }
 

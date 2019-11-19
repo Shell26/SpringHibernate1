@@ -5,7 +5,7 @@ import shell.model.User;
 import java.util.List;
 
 
-public interface UserDAO {
+public interface UserDao {
 
     User get(Long id);
     User getByLogin(String username);

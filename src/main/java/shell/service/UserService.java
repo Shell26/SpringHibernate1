@@ -13,13 +13,13 @@ import java.util.Set;
 @Component
 public class UserService {
 
-private UserDAO userDAO;
+private UserDao userDAO;
 
 @Autowired
 private RoleService roleService;
 
     @Autowired
-    public UserService( UserDAO userDAO) {
+    public UserService( UserDao userDAO) {
         this.userDAO = userDAO;
     }
 

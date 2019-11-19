@@ -18,7 +18,7 @@ import java.util.Properties;
 
 @Configuration
 @ComponentScan(value = "shell")
-@EnableJpaRepositories(basePackages = "shell.repositories")
+@EnableJpaRepositories(basePackages = "shell")
 @EnableTransactionManagement
 public class JPAConfig {
 
