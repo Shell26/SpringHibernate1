@@ -27,8 +27,8 @@ private RoleService roleService;
         return userDAO.getAll();
     }
 
-    public User get(Long id) {
-        return userDAO.get(id);
+    public User getById(Long id) {
+        return userDAO.getById(id);
     }
 
     public void save(User user, String roleUser) {
@@ -45,12 +45,6 @@ private RoleService roleService;
 
     }
 
-    public void saveAdmin(User user) {
-        Set<Role> role = new HashSet<>();
-        role.add(roleService.getRoleById(2L));
-        user.setRoles(role);
-        userDAO.save(user);
-    }
 
     public User getByLogin(String userlogin) {
       User user = userDAO.getByLogin(userlogin);

@@ -59,7 +59,7 @@ public class UsersController {
 
     @RequestMapping(value = "/admin/edit/{*}", method = RequestMethod.GET)
     public ModelAndView editPage(@PathVariable("*") long id) { //@PathVariable указывает на то, что данный параметр (int id) получается из адресной строки
-        User user = userService.get(id);
+        User user = userService.getById(id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("editPage");
         modelAndView.addObject("user", user);
