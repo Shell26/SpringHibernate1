@@ -11,8 +11,8 @@ import shell.model.Role;
 import shell.model.User;
 
 
+import shell.repositories.UserRepository;
 import shell.service.RoleService;
-import shell.service.SignUpServiceImpl;
 import shell.service.UserService;
 
 
@@ -35,7 +35,7 @@ public class UsersController {
     @Autowired
     private RoleService roleService;
     @Autowired
-    private SignUpServiceImpl service;
+    private UserRepository userRepository;
 
     public UsersController(UserService userService, RoleService roleService) {
         this.roleService = roleService;
@@ -44,7 +44,7 @@ public class UsersController {
 
     @RequestMapping(path = "/admin", method = RequestMethod.GET)
     public ModelAndView getAllUsers() {
-        List<User> users = userService.getAll();
+        List<User> users = userService.findAllUser();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("mainPage");
         modelAndView.addObject("usersFromServer", users);
@@ -53,26 +53,27 @@ public class UsersController {
 
     @RequestMapping(value = "/admin/delete/{*}", method = RequestMethod.POST)
     public String deleteUser(@PathVariable("*") Long userId) {
-        userService.delete(userId);
+        userService.deleteById(userId);
         return "redirect:/admin";
     }
 
     @RequestMapping(value = "/admin/edit/{*}", method = RequestMethod.GET)
     public ModelAndView editPage(@PathVariable("*") long id) { //@PathVariable указывает на то, что данный параметр (int id) получается из адресной строки
-        User user = userService.getById(id);
+        User user = userService.findOneById(id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("editPage");
+        user.setId(id);
         modelAndView.addObject("user", user);
         return modelAndView;
     }
 
     @RequestMapping(value = "/admin/edit", method = RequestMethod.POST)
     public ModelAndView editUser(@ModelAttribute("user") User user) {
-        Role role = roleService.getRoleById((long) 2);
-        Set<Role> setRoles = new HashSet<>();
-        setRoles.add(role);
-        user.setRoles(setRoles);
-        userService.edit(user, user.getId());
+        User userFromDB = userService.findOneById(user.getId());
+        userFromDB.setLogin(user.getLogin());
+        userFromDB.setName(user.getName());
+        userFromDB.setPassword(user.getPassword());
+        userRepository.save(userFromDB);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/admin"); //означает, что после выполнения данного метода мы будем перенаправлены на адрес "/"
         return modelAndView;
@@ -107,11 +108,8 @@ public class UsersController {
 
     @RequestMapping(path = "/admin/save", method = RequestMethod.POST)
     public String saveUsers(User user) {
-        Role role = roleService.getRoleById((long) 2);
-        Set<Role> setRoles = new HashSet<>();
-        setRoles.add(role);
-        String roleStr = setRoles.toString();
-        userService.save(user, roleStr);
+        user.setRoles(roleService.getRoleByName("USER"));
+        userService.addUser(user);
         return "redirect:/admin";
     }
 
@@ -122,7 +120,12 @@ public class UsersController {
 
     @PostMapping("/signUp")
     public String signUp (User user, String role) {
-        service.signUp(user, role);
+        if (role.equals("USER")) {
+            user.setRoles(roleService.getRoleByName(role));
+        } else {
+            user.setRoles(roleService.getRoleByName("ADMIN"));
+        }
+        userRepository.save(user);
         return "redirect:/login";
     }
 
