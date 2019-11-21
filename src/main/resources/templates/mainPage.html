@@ -19,7 +19,6 @@
     </tr>
     <tr th:each="user: ${usersFromServer}">
         <tr>
-            <!--/*@thymesVar id="user" type=""*/-->
             <td th:text="${user.id}"></td>
             <td th:text="${user.name}"></td>
             <td th:text="${user.login}"></td>
