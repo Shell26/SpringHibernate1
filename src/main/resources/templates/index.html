@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Title</title>
+</head>
+<body>
+Добро пожаловать, <span th:text="${user}"></span>.</br>
+У вас недостаточно прав, для просмотра всех пользователей.
+<form action="/logout" method="post">
+    <input type="submit" value="Logout">
+</form>
+</body>
+</html>

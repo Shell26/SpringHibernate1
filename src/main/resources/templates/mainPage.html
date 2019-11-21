@@ -18,22 +18,20 @@
         <th>User password</th>
     </tr>
     <tr th:each="user: ${usersFromServer}">
-        <tr>
-            <td th:text="${user.id}"></td>
-            <td th:text="${user.name}"></td>
-            <td th:text="${user.login}"></td>
-            <td th:text="${user.password}"></td>
+            <td th:text="${user.id}">Nothing</td>
+            <td th:text="${user.name}">Nothing</td>
+            <td th:text="${user.login}">Nothing</td>
+            <td th:text="${user.password}">Nothing</td>
             <td>
-                <form action="/admin/delete/${user.id}" method="POST">
+                <form th:action="@{'/admin/delete/' + ${user.id}}" method="POST">
                     <input type="submit" value="Delete"/>
                 </form>
             <td>
             <td>
-            <form action="/admin/edit/${user.id}">
+            <form th:action="@{'/admin/edit/' + ${user.id}}">
                 <input type="submit" value="Edit"/>
             </form>
             <td>
-        </tr>
     </tr>
 </table>
 <form action="/admin/save">
