@@ -7,8 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import shell.model.Role;
-import shell.model.User;
 
 
 import shell.repositories.UserRepository;
@@ -17,9 +15,6 @@ import shell.service.UserService;
 
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Controller
 public class UsersController {
@@ -43,12 +38,9 @@ public class UsersController {
     }
 
     @GetMapping("/login")
-    public String getLoginPage (Authentication authentication, ModelMap model, HttpServletRequest request) {
+    public String getLoginPage (Authentication authentication, HttpServletRequest request) {
         if (authentication != null) {
             return "redirect: /user";
-        }
-        if (request.getParameterMap().containsKey("error")) {
-            model.addAttribute("error", true);
         }
         return "login";
     }
@@ -56,7 +48,7 @@ public class UsersController {
     @GetMapping("/user")
     public ModelAndView getIndexPage (Authentication authentication) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("index");
+        modelAndView.setViewName("user");
         modelAndView.addObject("user", authentication.getName());
         return modelAndView;
     }
