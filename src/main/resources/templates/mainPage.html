@@ -10,6 +10,7 @@
 
 </head>
 <body>
+<!--<nav class="navbar navbar-default"></nav>nav-->
 <nav class="navbar navbar-dark bg-dark flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Bootstrap project</a>
     <ul class="navbar-nav px-3">
@@ -35,6 +36,7 @@
 
         <div class="col-10 p-3 mb-2 bg-light text-dark">
             <h4> Главная панель </h4>
+                 <!-- меню делать в ul-->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
@@ -81,7 +83,7 @@
                                     Edit
                                 </button>
 
-                                <!-- Modal -->
+                                <!-- Модально окно - поверх всего документа и блокируют прокрутку тела документа <body>, вместо него прокручивая модальные окна -->
                                 <div class="modal fade" th:attr="id=@{'exampleModal-' + ${user.id}}" tabindex="-1" role="dialog"
                                      aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
