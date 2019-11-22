@@ -19,7 +19,9 @@
     </ul>
 </nav>
 
+           <!--на всю ширину экрана-->
 <div class="container-fluid">
+
     <div class="row">
         <div class="col-2 p-3 ">
             <div>
@@ -32,7 +34,7 @@
 
 
         <div class="col-10 p-3 mb-2 bg-light text-dark">
-            <h4> Admin panel </h4>
+            <h4> Главная панель </h4>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
@@ -95,11 +97,14 @@
                                                 <div class="modal-body">
 
                                                     <strong>Username</strong>
-                                                    <input class="d-flex justify-content-center form-control form-control-lg" type="text" th:attr="value=@{${user.name}}" placeholder="name" name="name" required>
+                                                    <input class="d-flex justify-content-center form-control form-control-lg" type="text" th:attr="value=@{${user.name}}"
+                                                           placeholder="name" name="name" required>
                                                     <strong>Login</strong>
-                                                    <input class="d-flex justify-content-center form-control form-control-lg" type="text" th:attr="value=@{${user.login}}" placeholder="login" name="login" required>
+                                                    <input class="d-flex justify-content-center form-control form-control-lg" type="text" th:attr="value=@{${user.login}}"
+                                                           placeholder="login" name="login" required>
                                                     <strong>Password</strong>
-                                                    <input class="d-flex justify-content-center form-control form-control-lg" type="text" th:attr="value=@{${user.password}}" placeholder="password" name="password" required>
+                                                    <input class="d-flex justify-content-center form-control form-control-lg" type="text" th:attr="value=@{${user.password}}"
+                                                           placeholder="password" name="password" required>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                         <button type="submit" value="Edit" class="btn btn-primary">Edit</button>
@@ -109,18 +114,15 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </td>
-
                         </tr>
-
                         </tbody>
                     </table>
                 </div>
 
                 <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="col-4 mx-auto">
-                        <form th:action="@{/admin/save}" method="post">
+                        <form th:action="@{'/admin/save'}" method="post">
 
                             <label class="d-flex justify-content-center" for="name"><strong>Username</strong></label>
                             <input class="form-control form-control-lg" type="text" id="name" placeholder="name"
@@ -136,32 +138,14 @@
                                    name="password">
 
                             <div class="d-flex justify-content-center pt-2">
-                                <select class="btn btn-secondary dropdown-toggle" name="role">
-                                    <option>USER</option>
-                                    <option>ADMIN</option>
-                                </select>
-                            </div>
-
-                            <div class="d-flex justify-content-center pt-2">
                                 <input type="submit" class="btn btn-primary btn-lg btn-block" value="Add"/>
                             </div>
                         </form>
                     </div>
                 </div>
-
             </div>
-
-            <script>
-                $(function () {
-                    $('#myTab li:last-child a').tab('show')
-                })
-            </script>
-
-
         </div>
     </div>
-
-
 </div>
 
 
