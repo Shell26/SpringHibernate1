@@ -18,12 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class UsersController {
-//
-//    private UserServiceImpl userService;
-//
-//    public UsersController(UserServiceImpl userService) {
-//        this.userService = userService;
-//    }
 
     @Autowired
     private UserService userService;
