@@ -52,6 +52,17 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
+
     public Long getId() {
         return id;
     }

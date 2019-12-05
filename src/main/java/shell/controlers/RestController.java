@@ -1,0 +1,134 @@
+package shell.controlers;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+import shell.model.User;
+import shell.repositories.UserRepository;
+import shell.service.RoleService;
+import shell.service.UserService;
+
+import javax.validation.Valid;
+import java.util.List;
+
+@org.springframework.web.bind.annotation.RestController
+@RequestMapping("/api")
+public class RestController {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public RestController(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
+
+    @RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<List<User>> getAllUser(){
+//        List list = userRepository.findAll();
+//        if(list.isEmpty()){
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<>(list, HttpStatus.OK);
+//    }
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
+
+    @RequestMapping(value = "/admin/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> saveUser(@RequestBody User user){ //  @RequestBody - чтобы ввести тело HTTP-запроса в метод.
+        if(user == null){                                                      // @ResponseBody - чтобы вернуть содержимое или объект в качестве тела HTTP-ответа.
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        userRepository.save(user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/delete/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> deleteUser(@PathVariable("id") Long userId){
+        if(userId == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        User user = userRepository.getOne(userId);
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        userRepository.deleteById(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/edit", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> updateUser(@RequestBody User user, UriComponentsBuilder builder){
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        userRepository.save(user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+    @PostMapping(path = "/admin/edit/{id}")
+    public ResponseEntity editUser(User oldUser, @PathVariable("id") Long userId) {
+        User user = userRepository.getOne(userId);
+        user.setName(oldUser.getName());
+        user.setLogin(oldUser.getLogin());
+        userRepository.save(user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+
+//    //ResponseEntity<T> используется, чтобы вернуть HTTP-ответ с пользовательским статусом или заголовками.
+//    @RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<List<User>> getAllUser(){
+//        List list = userRepository.findAll();
+//        if(list.isEmpty()){
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<>(list, HttpStatus.OK);
+//    }
+//
+//    @RequestMapping(value = "/users/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<User> getUserById(@PathVariable("id") Long userId){
+//        if(userId == null){
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        User user = userRepository.getOne(userId);
+//        if(user == null){
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<>(user, HttpStatus.OK);
+//    }
+//
+//    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<User> saveUser(@RequestBody User user){ //  @RequestBody - чтобы ввести тело HTTP-запроса в метод.
+//        if(user == null){                                                      // @ResponseBody - чтобы вернуть содержимое или объект в качестве тела HTTP-ответа.
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        userRepository.save(user);
+//        return new ResponseEntity<>(user, HttpStatus.OK);
+//    }
+//
+//    @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<User> updateUser(@RequestBody User user, UriComponentsBuilder builder){
+//        if(user == null){
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        userRepository.save(user);
+//        return new ResponseEntity<>(user, HttpStatus.OK);
+//    }
+//
+//    @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<User> deleteUser(@PathVariable("id") Long userId){
+//        if(userId == null){
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        User user = userRepository.getOne(userId);
+//        if(user == null){
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        userRepository.deleteById(userId);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
+}
