@@ -127,8 +127,9 @@
 
                 <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="col-4 mx-auto">
-                        <form id="newUser" method="post">
+<!--                        <form id="newUser" method="post">-->
 
+                        <form action="/api/admin/save/" method="POST" onsubmit="return saveUser(this)">
                             <label class="d-flex justify-content-center" for="name"><strong>Username</strong></label>
                             <input class="form-control form-control-lg" type="text" id="name" placeholder="name"
                                    name="name">

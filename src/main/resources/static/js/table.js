@@ -1,6 +1,6 @@
 
 function createTable() {
-    console.log("Start table create");
+
     let html = $('<tbody/>');
     let addCell = function ($tr, content) {
         let $td = $('<td/>');
@@ -52,22 +52,21 @@ function createTable() {
                                                     <button type="submit" value="Edit" class="btn btn-primary">Edit</button>
                                                 </div>
                                             </div>
-                                        </form>
+                                            </form>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>`)
+                                </div>`)
             addCell($tr, `<button onclick="return deleteUser(${user.id})" id="delbut" type="button" class="btn btn-primary">Delete</button>`);
 
             html.append($tr);
         });
-        console.log("End table create");
         $('#tableUsers tbody').replaceWith(html);
     });
 }
 
 $(function () {
     createTable();
-})
+});
 
 function deleteUser(id) {
     $.ajax({
@@ -79,22 +78,56 @@ function deleteUser(id) {
     })
 }
 
-function editUser() {
+function editUser(id, form) {
+    let $form = $(form);
+    console.log($form.serializeArray());
     $.ajax({
-        url: "/api/admin/edit" + id,
+        url: "/api/admin/edit/" + id,
         type: "post",
+        data: $form.serializeArray(),
         success: function () {
-            $('#exampleModal-' + id).modal('dispose');
             $('.modal-backdrop').remove();
             createTable();
         },
         error: function () {
-            alert("Данные не отправлены");
+            alert("Не удалось отправить данные для редактирования");
+        }
+    });
+    return false;
+}
+function saveUser(form) {
+    let $form = $(form);
+    console.log($form.serializeArray());
+    $.ajax({
+        url: "/api/admin/save/",
+        type: "post",
+        data: $form.serializeArray(),
+        success: function () {
+            location.reload();
+            createTable();
+        },
+        error: function () {
+            alert("Не удалось отправить данные для редактирования");
         }
     });
     return false;
 }
 
-function addUser() {
-    
-}
+// $('#newUser').submit(function saveUser(form) {
+//     let $form = $(form);
+//     let data = $form.serializeArray();
+//     $.ajax({
+//         url: "/api/admin/save",
+//         type: "post",
+//         data: data,
+//         // console.log($form.serializeArray()),
+//         success: function () {
+//             location.reload();
+//             // createTable();
+//         },
+//         error: function () {
+//             alert("Не удалось добавить пользователя")
+//         },
+//     });
+// });
+

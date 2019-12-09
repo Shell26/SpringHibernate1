@@ -23,6 +23,9 @@ public class RestController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RoleService roleService;
+
     public RestController(UserRepository userRepository){
         this.userRepository = userRepository;
     }
@@ -39,13 +42,19 @@ public class RestController {
         return userRepository.findAll();
     }
 
-    @RequestMapping(value = "/admin/save", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> saveUser(@RequestBody User user){ //  @RequestBody - чтобы ввести тело HTTP-запроса в метод.
+    @RequestMapping(value = "/admin/save/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> saveUser(User user, String role){ //  @RequestBody - чтобы ввести тело HTTP-запроса в метод.
         if(user == null){                                                      // @ResponseBody - чтобы вернуть содержимое или объект в качестве тела HTTP-ответа.
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        if (role.equals("USER")) {
+            user.setRoles(roleService.getRoleByName("USER"));
+        }else{
+            user.setRoles(roleService.getRoleByName("ADMIN"));
+        }
         userRepository.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
+//        return ResponseEntity.ok().build();
     }
 
     @RequestMapping(value = "/admin/delete/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -61,21 +70,24 @@ public class RestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/admin/edit", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> updateUser(@RequestBody User user, UriComponentsBuilder builder){
-        if(user == null){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        userRepository.save(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
+//    @RequestMapping(value = "/admin/edit", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<User> updateUser(@RequestBody User user, UriComponentsBuilder builder){
+//        if(user == null){
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        userRepository.save(user);
+//        return new ResponseEntity<>(user, HttpStatus.OK);
+//    }
+
     @PostMapping(path = "/admin/edit/{id}")
-    public ResponseEntity editUser(User oldUser, @PathVariable("id") Long userId) {
+    public ResponseEntity editUser(User newUser, @PathVariable("id") Long userId) {
         User user = userRepository.getOne(userId);
-        user.setName(oldUser.getName());
-        user.setLogin(oldUser.getLogin());
+        user.setName(newUser.getName());
+        user.setLogin(newUser.getLogin());
+        user.setPassword(newUser.getPassword());
         userRepository.save(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+//        return new ResponseEntity<>(user, HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
 
