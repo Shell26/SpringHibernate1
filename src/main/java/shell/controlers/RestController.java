@@ -2,11 +2,14 @@ package shell.controlers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shell.model.User;
 import shell.repositories.UserRepository;
@@ -31,16 +34,16 @@ public class RestController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<List<User>> getAllUser(){
-//        List list = userRepository.findAll();
-//        if(list.isEmpty()){
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        }
-//        return new ResponseEntity<>(list, HttpStatus.OK);
-//    }
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
+//    public List<User> getAllUsers(){
+
+    public ResponseEntity<List<User>> getAllUser(){
+        List list = userRepository.findAll();
+        if(list.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
 
     @RequestMapping(value = "/admin/save/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> saveUser(User user, String role){ //  @RequestBody - чтобы ввести тело HTTP-запроса в метод.
@@ -53,8 +56,8 @@ public class RestController {
             user.setRoles(roleService.getRoleByName("ADMIN"));
         }
         userRepository.save(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
-//        return ResponseEntity.ok().build();
+//        return new ResponseEntity<>(user, HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     @RequestMapping(value = "/admin/delete/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -68,6 +71,12 @@ public class RestController {
         }
         userRepository.deleteById(userId);
         return new ResponseEntity<>(HttpStatus.OK);
+        //////
+//        RestTemplate restTemplate = new RestTemplate();
+//        String url = "http://localhost:8081/api/admin/delete/" + userId;
+//        restTemplate.getForObject(url, User.class);
+//        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
 //    @RequestMapping(value = "/admin/edit", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
