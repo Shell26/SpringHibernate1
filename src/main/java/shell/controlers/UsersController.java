@@ -2,56 +2,51 @@ package shell.controlers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-
-import shell.repositories.UserRepository;
-import shell.service.RoleService;
-import shell.service.UserService;
+import shell.model.Role;
+import shell.model.User;
+import shell.service.RestTemplateService;
 
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class UsersController {
 
     @Autowired
-    private UserService userService;
-    @Autowired
-    private RoleService roleService;
-    @Autowired
-    private UserRepository userRepository;
+    private RestTemplateService restTemplateService;
 
-    public UsersController(UserService userService, RoleService roleService) {
-        this.roleService = roleService;
-        this.userService = userService;
+    public UsersController(RestTemplateService restTemplateService){
+        this.restTemplateService = restTemplateService;
     }
 
     @GetMapping("/login")
-    public String getLoginPage (Authentication authentication, HttpServletRequest request) {
-        if (authentication != null) {
-            return "redirect: /user";
-        }
+    public String getLoginPage (HttpServletRequest request) {
+
         return "login";
     }
 
+    @RequestMapping(value = "/api/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<User>> getAllUser(){
+        return restTemplateService.getAllUsers();
+    }
+
     @GetMapping("/user")
-    public ModelAndView getIndexPage (Authentication authentication) {
+    public ModelAndView getIndexPage () {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("user");
-        modelAndView.addObject("user", authentication.getName());
+        modelAndView.addObject("user");
         return modelAndView;
     }
 
     @GetMapping("/")
-    public String getLoginPage(Authentication authentication) {
-        if (authentication != null) {
-            return "redirect: /user";
-        }
+    public String getLoginPage() {
         return "login";
     }
 }

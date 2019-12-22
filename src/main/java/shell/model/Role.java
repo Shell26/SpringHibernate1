@@ -1,6 +1,6 @@
 package shell.model;
 
-import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -9,7 +9,7 @@ import java.util.Objects;
 @Component
 @Entity
 @Table(name = "role")
-public class Role implements GrantedAuthority {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,8 +56,8 @@ public class Role implements GrantedAuthority {
         return Objects.hash(id, role);
     }
 
-    @Override
-    public String getAuthority() {
-        return getRole();
-    }
+//    @Override
+//    public String getAuthority() {
+//        return getRole();
+//    }
 }

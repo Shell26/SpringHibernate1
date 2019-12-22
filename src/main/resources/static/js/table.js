@@ -8,7 +8,7 @@ function createTable() {
         $tr.append($td);
     };
 
-    $.getJSON('/api/users', function (users) {
+    $.getJSON('/api/users', function (users) {  //почему не получается изменить?
 
         users.forEach(function (user) {
             let $tr = $('<tr/>');
@@ -30,7 +30,7 @@ function createTable() {
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                            <form action="/api/admin/edit/${user.id}" method="POST" onsubmit="return editUser(${user.id}, this)">
+                                            <form action="/admin/edit/${user.id}" method="POST" onsubmit="return editUser(${user.id}, this)">
                                             <div class="modal-body">
 
                                                 <strong>Username</strong>
@@ -70,27 +70,34 @@ $(function () {
 
 function deleteUser(id) {
     $.ajax({
-        url: "/api/admin/delete/" + id,
-        type: "post",
+        url: "/admin/delete/" + id,
+        type: "delete",
+        contentType: 'application/json',
         success: function () {
+            location.reload();
             createTable();
+        },
+        error: function () {
+            alert("Не удалось удалить данные");
         }
-    })
+    });
+    return false;
 }
 
 function editUser(id, form) {
     let $form = $(form);
     console.log($form.serializeArray());
     $.ajax({
-        url: "/api/admin/edit/" + id,
-        type: "post",
+        url: "/admin/edit/" + id,
+        type: "put",
         data: $form.serializeArray(),
         success: function () {
             $('.modal-backdrop').remove();
             createTable();
         },
         error: function () {
-            alert("Не удалось отправить данные для редактирования");
+            $('.modal-backdrop').remove();
+            createTable();
         }
     });
     return false;
@@ -99,7 +106,7 @@ function saveUser(form) {
     let $form = $(form);
     console.log($form.serializeArray());
     $.ajax({
-        url: "/api/admin/save/",
+        url: "/admin/save/",
         type: "post",
         data: $form.serializeArray(),
         success: function () {

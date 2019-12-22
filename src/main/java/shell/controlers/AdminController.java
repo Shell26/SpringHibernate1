@@ -1,13 +1,13 @@
 package shell.controlers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import shell.model.User;
-import shell.repositories.UserRepository;
-import shell.service.RoleService;
-import shell.service.UserService;
+import shell.service.RestTemplateService;
+
 
 import java.util.List;
 
@@ -15,42 +15,40 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    private UserService userService;
-    @Autowired
-    private RoleService roleService;
-    @Autowired
-    private UserRepository userRepository;
+    private RestTemplateService restTemplateService;
 
-    public AdminController(UserService userService, RoleService roleService) {
-        this.roleService = roleService;
-        this.userService = userService;
+    public AdminController(RestTemplateService restTemplateService){
+        this.restTemplateService = restTemplateService;
     }
 
     @RequestMapping(path = "/admin", method = RequestMethod.GET)
     public ModelAndView getAllUsers() {
-//        List<User> users = userService.findAllUser();
+        ResponseEntity<List<User>> response = restTemplateService.getAllUsers();
+        List<User> users = response.getBody();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("mainPage");
-//        modelAndView.addObject("usersFromServer", users);
+        modelAndView.addObject("usersFromServer", users);
         return modelAndView;
     }
 
-//    @RequestMapping(value = "/admin/delete/{*}", method = RequestMethod.POST)
-//    public String deleteUser(@PathVariable("*") Long userId) {
-//        userService.deleteById(userId);
-//        return "redirect:/admin";
-//    }
+    @RequestMapping(path = "/admin/save", method = RequestMethod.POST)
+    public String saveUsers(User user, String role) {
+        restTemplateService.saveUser(user, role);
+        return "redirect:/admin";
+    }
 
-//    @RequestMapping(value = "/admin/edit/{*}", method = RequestMethod.GET)
-//    public ModelAndView editPage(@PathVariable("*") long id) { //@PathVariable указывает на то, что данный параметр (int id) получается из адресной строки
-//        User user = userService.findOneById(id);
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("editPage");
-//        user.setId(id);
-//        modelAndView.addObject("user", user);
-//        return modelAndView;
-//    }
+    @RequestMapping(value = "/admin/delete/{*}", method = RequestMethod.DELETE)
+    public String deleteUser(@PathVariable("*") Long userId) {
+        restTemplateService.deleteById(userId);
+        return "redirect:/admin";
+    }
 
+    @RequestMapping(value = "/admin/edit/{*}", method = RequestMethod.PUT)
+    public String editPage(@PathVariable("*") long id, User user) { //@PathVariable указывает на то, что данный параметр (int id) получается из адресной строки
+        restTemplateService.editUser(user, id);
+        return "redirect:/admin";
+    }
+//
 //    @RequestMapping(value = "/admin/edit/{*}", method = RequestMethod.POST)
 //    public ModelAndView editUser(@PathVariable("*") long id, User user) {
 //        User userFromDB = userService.findOneById(id);
@@ -62,18 +60,12 @@ public class AdminController {
 //        modelAndView.setViewName("redirect:/admin"); //означает, что после выполнения данного метода мы будем перенаправлены на адрес "/"
 //        return modelAndView;
 //    }
-
+//
 //    @RequestMapping(path = "/admin/save", method = RequestMethod.POST)
 //    public String saveUsers(User user) {
 //        user.setRoles(roleService.getRoleByName("USER"));
 //        userService.addUser(user);
 //        return "redirect:/admin";
 //    }
-//
-//    @RequestMapping(path = "/admin/save", method = RequestMethod.GET)
-//    public ModelAndView save() {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("save");
-//        return modelAndView;
-//    }
+
 }
