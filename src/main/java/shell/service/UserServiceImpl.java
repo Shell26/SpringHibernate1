@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
 //private UserDao userDAO;
-//
+
 //@Autowired
 //private RoleServiceImpl roleService;
 //
@@ -88,6 +88,6 @@ public class UserServiceImpl implements UserService {
 //    public void edit(User user) {
 //        userDAO.update(user);
 //    }
-//
+
 
 }

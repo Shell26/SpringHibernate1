@@ -2,11 +2,14 @@ package shell.controlers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shell.model.User;
 import shell.repositories.UserRepository;
@@ -31,33 +34,31 @@ public class RestController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<List<User>> getAllUser(){
-//        List list = userRepository.findAll();
-//        if(list.isEmpty()){
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        }
-//        return new ResponseEntity<>(list, HttpStatus.OK);
-//    }
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
-    }
-
-    @RequestMapping(value = "/admin/save/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> saveUser(User user, String role){ //  @RequestBody - чтобы ввести тело HTTP-запроса в метод.
-        if(user == null){                                                      // @ResponseBody - чтобы вернуть содержимое или объект в качестве тела HTTP-ответа.
+//    public List<User> getAllUsers(){
+    public ResponseEntity<List<User>> getAllUser(){
+        List list = userRepository.findAll();
+        if(list.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        if (role.equals("USER")) {
-            user.setRoles(roleService.getRoleByName("USER"));
-        }else{
-            user.setRoles(roleService.getRoleByName("ADMIN"));
-        }
-        userRepository.save(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
-//        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/admin/delete/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+
+    @PostMapping(value = "/admin/save/")
+    public ResponseEntity<User> saveUser(@RequestBody User user){ //  @RequestBody - чтобы ввести тело HTTP-запроса в метод.
+
+        if (user.getId() == 1L) {
+            user.setRoles(roleService.getRoleByName("ADMIN"));
+        }else{
+            user.setRoles(roleService.getRoleByName("USER"));
+        }
+        user.setId(null);
+        userRepository.save(user);
+//        return new ResponseEntity<>(user, HttpStatus.OK);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/admin/delete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> deleteUser(@PathVariable("id") Long userId){
         if(userId == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -67,7 +68,14 @@ public class RestController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         userRepository.deleteById(userId);
-        return new ResponseEntity<>(HttpStatus.OK);
+//        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
+        //////
+//        RestTemplate restTemplate = new RestTemplate();
+//        String url = "http://localhost:8081/api/admin/delete/" + userId;
+//        restTemplate.getForObject(url, User.class);
+//        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
 //    @RequestMapping(value = "/admin/edit", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -79,8 +87,8 @@ public class RestController {
 //        return new ResponseEntity<>(user, HttpStatus.OK);
 //    }
 
-    @PostMapping(path = "/admin/edit/{id}")
-    public ResponseEntity editUser(User newUser, @PathVariable("id") Long userId) {
+    @PutMapping(path = "/admin/edit/{id}")
+    public ResponseEntity editUser(@PathVariable("id") Long userId, @RequestBody User newUser) {
         User user = userRepository.getOne(userId);
         user.setName(newUser.getName());
         user.setLogin(newUser.getLogin());

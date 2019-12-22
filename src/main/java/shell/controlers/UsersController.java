@@ -2,7 +2,7 @@ package shell.controlers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -32,26 +32,20 @@ public class UsersController {
     }
 
     @GetMapping("/login")
-    public String getLoginPage (Authentication authentication, HttpServletRequest request) {
-        if (authentication != null) {
-            return "redirect: /user";
-        }
+    public String getLoginPage ( HttpServletRequest request) {
         return "login";
     }
 
     @GetMapping("/user")
-    public ModelAndView getIndexPage (Authentication authentication) {
+    public ModelAndView getIndexPage () {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("user");
-        modelAndView.addObject("user", authentication.getName());
+        modelAndView.addObject("user");
         return modelAndView;
     }
 
     @GetMapping("/")
-    public String getLoginPage(Authentication authentication) {
-        if (authentication != null) {
-            return "redirect: /user";
-        }
+    public String getLoginPage() {
         return "login";
     }
 }
